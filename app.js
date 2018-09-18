@@ -75,7 +75,7 @@ app.get('/user', auth.ensureAuth(), async(req, res) => {
   const accessLog = await db.findAccessLog({userId: user.id})
 
   const userInfo = { user, accessLog }
-  res.render('page/user/user', {msg: userInfo})
+  res.render('page/user/user', {msg: `${user.name}, welcome`})
 })
 
 app.get('/logout', (req, res) => {
