@@ -15,7 +15,7 @@ const db = {
     return Promise.resolve().then(() => data.users.filter(validate)[0])
     // user select
   },
-  findUserById(id) {
+  findUserByEmail(id) {
     id = id * 1
     const validate = user => user.id === id
     return Promise.resolve().then(() => data.users.filter(validate)[0])

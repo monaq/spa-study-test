@@ -45,9 +45,6 @@ app.get('/', async (req, res) => {
 
 app.post('/login', async(req, res) => {
   const { email, password } = req.body
-
-  // console.log(req.body)
-
   const user = await db.findUser({email, password}) //db 에서 유저정보를 찾는다
   if (!user || !user.id) return res.status(401).json({error: 'Login failure'})
 
@@ -57,34 +54,42 @@ app.post('/login', async(req, res) => {
 
   const accessToken = auth.signToken(user.id) // auth된 accessToken을 받는다.
 
-  
-  // res.render('page/user/user', {msg: `${user.name} ::: ${accessToken}` } )
-  // res.json({accessToken})
+  sess.email = email
+  sess.password = password
 
-  // req.headers.authorization = { accessToken }
-  sess = { accessToken }
+  console.log(sess.userInfo)
+
   res.redirect('/user')
-  // localStorage.setItem( 'accessToken', { accessToken })
-  // req.cookies = { accessToken }
 })
 
 // // todo: callback auth가 있는지 확인한다.
 app.get('/user', auth.ensureAuth(), async(req, res) => {
-  const user = await db.findUserById(req.user.id) //db 에서 유저를 id로 찾아 넣는다.
-  console.log('/user req', req.user)
-  const accessLog = await db.findAccessLog({userId: user.id})
+  // const user = await db.findUserById(req.user.id) //db 에서 유저를 id로 찾아 넣는다.
+  // console.log('/user req', req.user)
+  // const accessLog = await db.findAccessLog({userId: user.id})
+  const email = sess.email
+  const password = sess.password
+  const user = await db.findUser({email, password}) || null
+  console.log(user)
+  if(user) {
+    res.render('page/user/user', {msg: `${user.name}, welcome`})
+  } else {
+    throw new Error('틀렸어요')
+  }
 
-  const userInfo = { user, accessLog }
-  res.render('page/user/user', {msg: `${user.name}, welcome`})
+  // const userInfo = { user, accessLog }
+  
 })
 
 app.get('/logout', (req, res) => {
+  sess.destroy()
   res.redirect('/')
 })
 
 app.use((err, req, res, next) => {
   console.log(err)
-  req.headers.authorization = undefined
+  sess.destroy()
+  // req.headers.authorization = undefined
   res.json({error: err.message})
 })
 
