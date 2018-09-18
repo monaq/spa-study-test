@@ -4,11 +4,14 @@ const bodyParser = require('body-parser')
 const auth = require('./auth')
 const db = require('./db')
 const cors = require('cors')
+var cookieParser = require('cookie-parser')
 const app = express()
 
 const viewPath = path.join( __dirname, 'views' );
 const publicPath = path.join( __dirname, 'public' );
 
+app.use(cookieParser())
+app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.set('view engine', 'jade' )
@@ -47,15 +50,19 @@ app.post('/login', async(req, res) => {
 
   const accessToken = auth.signToken(user.id) // auth된 accessToken을 받는다.
 
-  res.redirect('/user')
+  // res.redirect('/user')
   // res.render('page/user/user', {msg: `${user.name} ::: ${accessToken}` } )
-  // res.json({accessToken})
+  res.json({accessToken})
+
+  req.headers.authorization = { accessToken }
+  // localStorage.setItem( 'accessToken', { accessToken })
+  // req.cookies = { accessToken }
 })
 
 // // todo: callback auth가 있는지 확인한다.
 app.get('/user', auth.ensureAuth(), async(req, res) => {
   const user = await db.findUserById(req.user.id) //db 에서 유저를 id로 찾아 넣는다.
-  console.log('/user req', req)
+  console.log('/user req', req.user)
   const accessLog = await db.findAccessLog({userId: user.id})
 
   const userInfo = { user, accessLog }
@@ -68,7 +75,9 @@ app.get('/logout', (req, res) => {
 
 app.use((err, req, res, next) => {
   console.log(err)
-  req.headers.authorization = undefined
+  // req.headers.authorization = undefined
+  // req.cookies.authorization = undefined
+  delete localStorage.accessToken
   res.json({error: err.message})
 })
 

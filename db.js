@@ -27,6 +27,7 @@ const db = {
     // accessLog filter
   },
   createAccessLog({ userId }) {
+    console.log(userId)
     return Promise.resolve().then(() => data.logs.push({userId, createdAt: new Date()}))
     // push user log
   }
