@@ -20,16 +20,6 @@ const db = {
     const validate = user => user.id === id
     return Promise.resolve().then(() => data.users.filter(validate)[0])
     // user select by id
-  },
-  findAccessLog({ userId }) {
-    console.log('logs', data.logs)
-    return Promise.resolve().then(() => data.logs.filter(log => log.userId === userId))
-    // accessLog filter
-  },
-  createAccessLog({ userId }) {
-    console.log(userId)
-    return Promise.resolve().then(() => data.logs.push({userId, createdAt: new Date()}))
-    // push user log
   }
 }
 

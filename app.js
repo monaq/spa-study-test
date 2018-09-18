@@ -40,10 +40,6 @@ app.post('/login', async(req, res) => {
   const user = await db.findUser({email, password}) //db 에서 유저정보를 찾는다
   if (!user || !user.id) return res.status(401).json({error: 'Login failure'})
 
-  await db.createAccessLog({
-    userId: user.id
-  })
-
   sess.email = email
   sess.password = password
 
@@ -55,7 +51,6 @@ app.get('/user', async(req, res) => {
   const email = sess.email
   const password = sess.password
   const user = await db.findUser({email, password}) || null
-  console.log(user)
   if(user) {
     res.render('page/user/user', {msg: `${user.name}, welcome`})
   } else {
