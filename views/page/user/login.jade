@@ -1,0 +1,22 @@
+extends ../index
+
+append head
+
+block content
+	.wrap-coll
+		.coll-tit
+			h2(class="cont-tit") Login
+		.coll-cont
+			form(method="post" action="/login")
+				fieldset
+					legend(class="screen-out") 로그인 화면
+					.login-email
+						label(class="screen-out" for="email") 이메일
+						span(class="cover-login")
+							input(type="text" name="email" id="email" placeholder="Email")
+					.login-pwd
+						label(class="screen-out" for="password") 비밀번호
+						span(class="cover-login")
+							input(type="password" name="password" id="password" placeholder="Password")
+					.login-submit
+						button(class="btn-submit") 로그인

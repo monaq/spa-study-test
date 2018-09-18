@@ -1,0 +1,25 @@
+extends layout
+
+block head
+	meta(charset="UTF-8")
+	meta(name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0")
+	meta(http-equiv="X-UA-Compatible" content="ie=edge")
+	link(rel="stylesheet" href="/common.css")
+
+block header
+	#s-header
+		h1(class="cover-logo")
+			a(href="javascript:;" class="link-logo") TEST
+		ul(class="list-status")
+			li
+				a(href="/logout" class="link-status")
+					span(class="screen-out") 로그인 상태
+					span 로그아웃
+
+block section
+	#s-section
+		#s-content
+			block content
+
+block footer
+	#s-footer
