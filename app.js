@@ -3,6 +3,7 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const auth = require('./auth')
 const db = require('./db')
+const session = require('express-session')
 const cors = require('cors')
 var cookieParser = require('cookie-parser')
 const app = express()
@@ -12,6 +13,11 @@ const publicPath = path.join( __dirname, 'public' );
 
 app.use(cookieParser())
 app.use(cors())
+app.use(session({
+  secret: 'secretCode',
+  resave: false,
+  saveUninitialized: true
+}))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.set('view engine', 'jade' )
@@ -20,6 +26,7 @@ app.use( express.static( publicPath ) );
 app.use( '/public', express.static( publicPath ) );
 
 app.get('/', async (req, res) => {
+  sess = req.session
   let user
   try {
     // todo: user = verify
@@ -50,11 +57,13 @@ app.post('/login', async(req, res) => {
 
   const accessToken = auth.signToken(user.id) // auth된 accessToken을 받는다.
 
-  // res.redirect('/user')
+  
   // res.render('page/user/user', {msg: `${user.name} ::: ${accessToken}` } )
-  res.json({accessToken})
+  // res.json({accessToken})
 
-  req.headers.authorization = { accessToken }
+  // req.headers.authorization = { accessToken }
+  sess = { accessToken }
+  res.redirect('/user')
   // localStorage.setItem( 'accessToken', { accessToken })
   // req.cookies = { accessToken }
 })
@@ -75,9 +84,7 @@ app.get('/logout', (req, res) => {
 
 app.use((err, req, res, next) => {
   console.log(err)
-  // req.headers.authorization = undefined
-  // req.cookies.authorization = undefined
-  delete localStorage.accessToken
+  req.headers.authorization = undefined
   res.json({error: err.message})
 })
 

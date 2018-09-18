@@ -8,9 +8,10 @@ const auth = {
   },
   ensureAuth() {
     return (req, res, next) => {
-      // const { authorization } = req.headers
-      const { authorization } = window.localStorage.getItem(accessToken);
-      console.log('auth:' ,authorization)
+      // console.log('authtoken:' , sess)
+      const authorization = sess.accessToken
+      console.log('auth:' , sess)
+      
 
       if(!authorization) {
         res.status(401)
