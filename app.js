@@ -3,13 +3,11 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const db = require('./db')
 const session = require('express-session')
-const cors = require('cors')
 const app = express()
 
 const viewPath = path.join( __dirname, 'views' );
 const publicPath = path.join( __dirname, 'public' );
 
-app.use(cors())
 app.use(session({
   secret: 'secretCode',
   maxAge: 100 * 60 * 60, // 쿠키 유효기간
@@ -30,7 +28,6 @@ app.get('/', async (req, res) => {
     user = sess.userId ? await db.findUserById(sess.userId) : null // 로그인되어있는지 확인
   } catch(e) {
   }
-  console.log(sess)
 
   if(user) {
     res.redirect('/user')
@@ -49,8 +46,6 @@ app.post('/login', async(req, res) => {
   sess.password = password
   sess.userId = user.id
 
-  console.log(sess.userId)
-
   res.redirect('/user')
 })
 
@@ -64,18 +59,13 @@ app.get('/user', async(req, res) => {
     res.render('page/user/user', {msg: `${user.name}, welcome`})
   } else {
     throw new Error('로그인실패염')
+    // response가 없넹
   }
 })
 
 app.get('/logout', (req, res) => {
   req.session.destroy()
   res.redirect('/')
-})
-
-app.use((err, req, res, next) => {
-  console.log(err)
-  req.session.destroy()
-  res.json({error: err.message})
 })
 
 module.exports = app
