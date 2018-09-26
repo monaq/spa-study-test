@@ -1,5 +1,5 @@
 import { $ } from 'jquery'
-const Fetch = (TYPE = '', URL = '', callback = {}) => {
+const Fetch = (TYPE = '', URL = '', callback = () => {}) => {
     return $.ajax({
         type: TYPE,
         url: URL,
