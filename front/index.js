@@ -1,5 +1,4 @@
 /* window */
-import Fetch from './util/fetch'
 import routes from './routes'
 
 const contentDiv = document.getElementById('s-content')
