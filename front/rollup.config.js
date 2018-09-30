@@ -1,6 +1,7 @@
 import babel from 'rollup-plugin-babel'
 import serve from 'rollup-plugin-serve'
 import resolve from 'rollup-plugin-node-resolve'
+import jquery from 'jquery'
 
 const pkg = require('./package.json')
 

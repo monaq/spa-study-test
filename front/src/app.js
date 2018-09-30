@@ -8,7 +8,7 @@ const createApp = () => {
 
             this.controller.setView(this.$contentDiv)
             this.onNavItemClick()
-            this.onChangeHash()
+            this.onHashChange()
         }
 
         onNavItemClick() {
@@ -22,7 +22,7 @@ const createApp = () => {
 
         }
 
-        onChangeHash() {
+        onHashChange() {
             window.onpopstate = () => {
                 this.controller.setView(this.$contentDiv)
             }
