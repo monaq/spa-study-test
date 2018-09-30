@@ -11,8 +11,12 @@ class Controller {
 
     setView($container) {
         const pathName = this.getPathName()
-        console.log(pathName)
-        $container.innerHTML = routes[pathName]
+
+        if(routes[pathName]) {
+            $container.innerHTML = routes[pathName]
+        } else {
+            // TODO: 404 처리
+        }
     }
 }
 
