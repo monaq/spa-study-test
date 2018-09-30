@@ -1,27 +1,31 @@
-
 import babel from 'rollup-plugin-babel'
-import babelrc from 'babelrc-rollup'
 import serve from 'rollup-plugin-serve'
+import resolve from 'rollup-plugin-node-resolve'
 
-let pkg = require('./package.json')
-let external = Object.keys(pkg.dependencies)
+const pkg = require('./package.json')
 
-let plugins = [
-  babel(babelrc()),
-  serve('dist')
-];
+const plugins = [
+  babel({
+    exclude: 'node_modules/**' // only transpile our source code
+  }),
+  resolve(),
+  serve({
+    open: true,
+    contentBase: 'dist',
+    host: 'localhost',
+    port: 10001
+  })
+]
 
-export default {
-  entry: 'index.js',
+module.exports = {
+  input: './src/index.js',
   plugins: plugins,
-  external: external,
-  globals: { jquery: '$' },
-  targets: [
-    {
-      dest: pkg.main,
-      format: 'umd',
-      moduleName: 'rollupStarterProject',
-      sourceMap: true
+  output: {
+    file: pkg.main,
+    format: 'iife',
+    name: 'spaTest',
+    globals: {
+      jquery: '$'
     }
-  ]
-};
+  },
+}

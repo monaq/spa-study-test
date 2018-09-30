@@ -1,8 +1,30 @@
 {
-    "parser": "babel-eslint",
-    "extends": "eslint:recommended",
-    "env": {
-      "node": true,
-      "mocha": true
-    }
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "rules": {
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "semi": [
+      "error",
+      "never"
+    ],
+    "quotes": [
+      "error", 
+      "single"
+    ],
+    "no-trailing-spaces": "off",
+    "keyword-spacing": "off",
+    "no-unused-vars": "warn",
+    "no-multiple-empty-lines": "off",
+    "space-before-function-paren": "off",
+    "eol-last": "off"
   }
+}

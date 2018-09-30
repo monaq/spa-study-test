@@ -2,32 +2,27 @@
   "name": "front",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
     "dev": "rollup -c",
     "start": "rollup -c -w"
   },
-  "repository": "rollup/rollup-starter-project",
   "author": "monica kwon",
   "license": "MIT",
-  "files": [
-    "lib",
-    "dist"
-  ],
   "dependencies": {
-    "dashboard": "0.0.1",
-    "jquery": "^3.3.1"
+    "jquery": "^3.3.1",
+    "rollup": "^0.66.2"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
     "babel-plugin-external-helpers": "^6.18.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-register": "^6.18.0",
-    "babelrc-rollup": "^3.0.0",
     "eslint": "^4.1.1",
-    "rollup": "^0.43.0",
     "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-local-resolve": "^1.0.7",
+    "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-serve": "^0.6.0",
     "rollup-watch": "^4.0.0"
   }
