@@ -31,7 +31,7 @@ var User = `<h2>Login success, <span class="userName"></span></h2>`
 
 function App () {
     this.state = {
-        userId: null,
+        user: null,
         isLogin: false
     }
     this.routes = {
@@ -52,9 +52,13 @@ App.prototype = {
      */
     bindEvents: function() {
         var $loginBtn = document.getElementById('btn-submit')
+        var $logoutBtn = document.getElementById('logout')
         var self = this
         $loginBtn.onclick = function() {
             self.login()
+        }
+        $logoutBtn.onclick = function() {
+            self.logout()
         }
         this.onHashChange()
     },
@@ -74,36 +78,41 @@ App.prototype = {
      * ajax fetch
      */
     fetch: function(TYPE, URL, data) {
-        var resourceHost = 'https://localhost:3012'
+        var resourceHost = 'http://localhost:3012'
         var self = this
-        return $.ajax({
+        $.ajax({
             type: TYPE,
             url: resourceHost + URL,
+            dataType: 'json',
             data: data,
-            success: self.setLogin(data),
+            success: res => self.setLogin(res),
             error: function (xhr, status, error) {
-                console.log(error)
+                alert('로그인 실패')
             }
         })
+        return false
     },
     login: function() {
         var self = this
         var param = $("form[name=login]").serialize()
-        console.log(param)
-        var data = this.fetch('post', '/login', param)
-        console.log(data)
+        this.fetch('POST', '/login', param)
+
     },
     setLogin: function(data) {
-        this.state.userId = data.userId
+        console.log(data)
+        this.state.user = data.email
         this.state.isLogin = true
 
-        console.log(this.state)
+        window.sessionStorage.setItem('user', this.state.user)
+        window.location.href = window.location.href + '/#/user'
         this.setView('/user')
-        window.location.href = window.location.href + '#/user'
     },
     logout: function() {
+        this.fetch('GET', '/logout', null)
         this.state.userId = null
         this.state.isLogin = false
+        window.sessionStorage.clear()
+        window.location.href = '/'
     }
 }
 
